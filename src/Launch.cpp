@@ -70,11 +70,11 @@ void listener_spawn( thread_Settings *thread ) {
     Listener *theListener = NULL;
 
     if (thread->mAffinity != -1) {
-        printf("Set affinity to %d", thread->mAffinity);
+/*        printf("Set Listener affinity to %d", thread->mAffinity);
         cpu_set_t my_set;
         CPU_ZERO(&my_set);
         CPU_SET(thread->mAffinity, &my_set);
-        sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
+        pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &my_set);*/
     }
 
     // start up a listener

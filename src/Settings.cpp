@@ -331,6 +331,7 @@ void Settings_Interpret( char option, const char *optarg, thread_Settings *mExtS
         case 'a': // Affinity
             Settings_GetUpperCaseArg(optarg,outarg);
             mExtSettings->mAffinity = byte_atoi( outarg );
+            break;
         case 'b': // UDP bandwidth
             Settings_GetLowerCaseArg(optarg,outarg);
 	    // scan for PPS units, just look for 'p' as that's good enough

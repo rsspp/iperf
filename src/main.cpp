@@ -166,6 +166,17 @@ int main( int argc, char **argv ) {
     // read settings from command-line parameters
     Settings_ParseCommandLine( argc, argv, ext_gSettings );
 
+    if (ext_gSettings->mAffinity != -1) {
+        printf("Set Main affinity to %d", ext_gSettings->mAffinity);
+        cpu_set_t my_set;
+        CPU_ZERO(&my_set);
+        CPU_SET(ext_gSettings->mAffinity, &my_set);
+
+        pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &my_set);
+    }
+
+
+
     // Check for either having specified client or server
     if ( ext_gSettings->mThreadMode == kMode_Client 
          || ext_gSettings->mThreadMode == kMode_Listener ) {

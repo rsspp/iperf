@@ -1,3 +1,4 @@
+
 /*--------------------------------------------------------------- 
  * Copyright (c) 1999,2000,2001,2002,2003                              
  * The Board of Trustees of the University of Illinois            
@@ -67,9 +68,10 @@
  *   <errno.h>
  * Thread.h may include <pthread.h>
  * ------------------------------------------------------------------- */
-
+#define _GNU_SOURCE             /* See feature_test_macros(7) */
+#include <sched.h>
 #include "headers.h"
-
+#include <stdlib.h>
 #include "Thread.h"
 #include "Locale.h"
 #include "util.h"
