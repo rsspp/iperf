@@ -334,6 +334,16 @@ void Listener::Listen( ) {
     Socklen_t len = sizeof(boolean);
     setsockopt( mSettings->mSock, SOL_SOCKET, SO_REUSEADDR, (char*) &boolean, len );
 
+    // reuseport to allow parallel receive
+//    setsockopt( mSettings->mSock, SOL_SOCKET, SO_REUSEPORT, (char*) &boolean, len );
+
+    //  Sharded socket
+    printf("Setting sharded to %d\n", mSettings->mAffinity);
+    int ret;
+    if ((ret = setsockopt( mSettings->mSock, SOL_SOCKET, 68, &mSettings->mAffinity, len )) != 0) {
+        printf("FAILURE %d\n", ret);
+    }
+
     // bind socket to server address
 #ifdef WIN32
     if ( SockAddr_isMulticast( &mSettings->local ) ) {

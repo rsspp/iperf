@@ -135,6 +135,7 @@ typedef struct thread_Settings {
     int mMSS;                       // -M
     int mTCPWin;                    // -w
     /*   flags is a BitMask of old bools
+     *
         bool   mBufLenSet;              // -l
         bool   mCompat;                 // -C
         bool   mDaemon;                 // -D
@@ -157,6 +158,7 @@ typedef struct thread_Settings {
         bool   mNoMultReport;           // -x m
         bool   mSinlgeClient;           // -1 */
     int flags; 
+    int mAffinity;
     // enums (which should be special int's)
     ThreadMode mThreadMode;         // -s or -c
     ReportMode mReportMode;

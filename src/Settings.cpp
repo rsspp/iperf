@@ -84,6 +84,7 @@ void Settings_Interpret( char option, const char *optarg, thread_Settings *mExtS
 const struct option long_options[] =
 {
 {"singleclient",     no_argument, NULL, '1'},
+{"affinity",   required_argument, NULL, 'a'},
 {"bandwidth",  required_argument, NULL, 'b'},
 {"client",     required_argument, NULL, 'c'},
 {"dualtest",         no_argument, NULL, 'd'},
@@ -131,6 +132,7 @@ const struct option long_options[] =
 const struct option env_options[] =
 {
 {"IPERF_SINGLECLIENT",     no_argument, NULL, '1'},
+{"IPERF_AFFINITY",         no_argument, NULL, 'a'},
 {"IPERF_BANDWIDTH",  required_argument, NULL, 'b'},
 {"IPERF_CLIENT",     required_argument, NULL, 'c'},
 {"IPERF_DUALTEST",         no_argument, NULL, 'd'},
@@ -172,7 +174,7 @@ const struct option env_options[] =
 
 #define SHORT_OPTIONS()
 
-const char short_options[] = "1b:c:def:hi:l:mn:o:p:rst:uvw:x:y:zB:CDF:IL:M:NP:RS:T:UVWZ:";
+const char short_options[] = "1a:b:c:def:hi:l:mn:o:p:rst:uvw:x:y:zB:CDF:IL:M:NP:RS:T:UVWZ:";
 
 /* -------------------------------------------------------------------
  * defaults
@@ -199,6 +201,7 @@ void Settings_Initialize( thread_Settings *main ) {
     main->mReportMode = kReport_Default;
     // option, defaults
     main->flags         = FLAG_MODETIME | FLAG_STDOUT; // Default time and stdout
+    main->mAffinity      = -1;
     //main->mUDPRate      = 0;           // -b,  ie. TCP mode
     main->mUDPRateUnits = kRate_BW;
     //main->mHost         = NULL;        // -c,  none, required for client
@@ -325,6 +328,9 @@ void Settings_Interpret( char option, const char *optarg, thread_Settings *mExtS
         case '1': // Single Client
             setSingleClient( mExtSettings );
             break;
+        case 'a': // Affinity
+            Settings_GetUpperCaseArg(optarg,outarg);
+            mExtSettings->mAffinity = byte_atoi( outarg );
         case 'b': // UDP bandwidth
             Settings_GetLowerCaseArg(optarg,outarg);
 	    // scan for PPS units, just look for 'p' as that's good enough
