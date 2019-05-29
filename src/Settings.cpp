@@ -108,6 +108,7 @@ const struct option long_options[] =
 {"realtime",         no_argument, NULL, 'z'},
 
 // more esoteric options
+{"automigrate",      no_argument, NULL, 'A'},
 {"bind",       required_argument, NULL, 'B'},
 {"compatibility",    no_argument, NULL, 'C'},
 {"daemon",           no_argument, NULL, 'D'},
@@ -176,7 +177,7 @@ const struct option env_options[] =
 
 #define SHORT_OPTIONS()
 
-const char short_options[] = "1a:b:c:def:hi:l:mn:o:p:rst:uvw:x:y:zB:CDEF:HIL:M:NP:RS:T:UVWZ:";
+const char short_options[] = "1a:b:c:def:hi:l:mn:o:p:rst:uvw:x:y:zAB:CDEF:HIL:M:NP:RS:T:UVWZ:";
 
 /* -------------------------------------------------------------------
  * defaults
@@ -231,6 +232,7 @@ void Settings_Initialize( thread_Settings *main ) {
     //main->mDaemon     = false;         // -D,  run as a daemon
     //main->mReuseport  = false;         // -E,  run as a reuseport
     //main->mSharded    = false;         // -H,  run as a sharded
+    //main->mAutomigrate  = false;       // -A
     //main->mFileInput  = false;         // -F,
     //main->mFileName     = NULL;        // -F,  filename 
     //main->mStdin      = false;         // -I,  default not stdin
@@ -565,7 +567,9 @@ void Settings_Interpret( char option, const char *optarg, thread_Settings *mExtS
             }
             break;
 
-
+        case 'A': // Enable automigration
+            setAutomigrate( mExtSettings );
+            break;
             // more esoteric options
         case 'B': // specify bind address
 	    parsedopts = new char[ strlen( optarg ) + 1 ];
@@ -604,10 +608,10 @@ void Settings_Interpret( char option, const char *optarg, thread_Settings *mExtS
         case 'D': // Run as a daemon
             setDaemon( mExtSettings );
             break;
-        case 'H': // Run as a sharded
+        case 'H': // Set SO_SHARDED
             setSharded( mExtSettings );
             break;
-        case 'E': // Run as a sharded
+        case 'E': // Set SO_REUSEPORT
             setReuseport( mExtSettings );
             break;
         case 'F' : // Get the input for the data stream from a file

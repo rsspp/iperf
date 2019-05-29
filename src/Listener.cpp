@@ -494,6 +494,15 @@ void Listener::Accept( thread_Settings *server ) {
             // accept a connection
             server->mSock = accept( mSettings->mSock, 
                                     (sockaddr*) &server->peer, &server->size_peer );
+    int boolean = 1;
+    Socklen_t len = sizeof(boolean);
+
+    if (isAutomigrate(mSettings)) {
+        if (setsockopt( server->mSock, SOL_SOCKET, SO_AUTOMIGRATE, (char*) &boolean, len ) != 0)
+            perror("Cannot set automigrate");
+    }
+
+
             if ( server->mSock == INVALID_SOCKET && 
 #if WIN32
 		 WSAGetLastError() == WSAEINTR

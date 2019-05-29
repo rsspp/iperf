@@ -228,6 +228,7 @@ typedef struct thread_Settings {
 #define FLAG_ENHANCEDREPORT 0x02000000
 #define FLAG_REUSEPORT      0x04000000
 #define FLAG_SHARDED        0x08000000
+#define FLAG_AUTOMIGRATE    0x10000000
 
 #define isBuflenSet(settings)      ((settings->flags & FLAG_BUFLENSET) != 0)
 #define isCompat(settings)         ((settings->flags & FLAG_COMPAT) != 0)
@@ -259,6 +260,7 @@ typedef struct thread_Settings {
 #define isEnhanced(settings)       ((settings->flags & FLAG_ENHANCEDREPORT) != 0)
 #define isReuseport(settings)      ((settings->flags & FLAG_REUSEPORT) != 0)
 #define isSharded(settings)        ((settings->flags & FLAG_SHARDED) != 0)
+#define isAutomigrate(settings)    ((settings->flags & FLAG_AUTOMIGRATE) != 0)
 
 #define setBuflenSet(settings)     settings->flags |= FLAG_BUFLENSET
 #define setCompat(settings)        settings->flags |= FLAG_COMPAT
@@ -288,6 +290,7 @@ typedef struct thread_Settings {
 #define setEnhanced(settings)      settings->flags |= FLAG_ENHANCEDREPORT
 #define setReuseport(settings)     settings->flags |= FLAG_REUSEPORT
 #define setSharded(settings)       settings->flags |= FLAG_SHARDED
+#define setAutomigrate(settings)   settings->flags |= FLAG_AUTOMIGRATE
 
 
 #define unsetBuflenSet(settings)   settings->flags &= ~FLAG_BUFLENSET
@@ -318,6 +321,7 @@ typedef struct thread_Settings {
 #define unsetEnhanced(settings)    settings->flags &= ~FLAG_ENHANCEDREPORT
 #define unsetReuseport(settings)   settings->flags &= ~FLAG_REUSEPORT
 #define unsetSharded(settings)     settings->flags &= ~FLAG_SHARDED
+#define unsetAutomigrate(settings) settings->flags &= ~FLAG_AUTOMIGRATE
 
 #define HEADER_VERSION1 0x80000000
 #define RUN_NOW         0x00000001
