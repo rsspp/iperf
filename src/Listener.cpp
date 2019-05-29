@@ -79,6 +79,7 @@
 #include "PerfSocket.hpp"
 #include "List.h"
 #include "util.h" 
+#include <linux/filter.h>
 
 /* ------------------------------------------------------------------- 
  * Stores local hostname and socket info. 
@@ -335,13 +336,32 @@ void Listener::Listen( ) {
     setsockopt( mSettings->mSock, SOL_SOCKET, SO_REUSEADDR, (char*) &boolean, len );
 
     // reuseport to allow parallel receive
-//    setsockopt( mSettings->mSock, SOL_SOCKET, SO_REUSEPORT, (char*) &boolean, len );
+    if (isReuseport(mSettings)) {
+        printf("Setting reuseport\n");
+        setsockopt( mSettings->mSock, SOL_SOCKET, SO_REUSEPORT, (char*) &boolean, len );
+        if (mSettings->mAffinity == 0) {
+        struct sock_filter code[] = {
+                    /* A = raw_smp_processor_id() */
+                    { BPF_LD  | BPF_W | BPF_ABS, 0, 0, (unsigned)(SKF_AD_OFF + SKF_AD_CPU)},
+                  //       {BPF_LD | BPF_W, 0, 0, 1},
+                        /* return A */
+                            { BPF_RET | BPF_A, 0, 0, 0 },
+                                };
+            struct sock_fprog p = {
+                        .len = 2,
+                                .filter = code,
+                                    };
 
+                if (setsockopt(mSettings->mSock, SOL_SOCKET, SO_ATTACH_REUSEPORT_CBPF, &p, sizeof(p)))
+                            printf("failed to set SO_ATTACH_REUSEPORT_CBPF with errno %d\n", errno);
+    }
+    }
     //  Sharded socket
-    printf("Setting sharded to %d\n", mSettings->mAffinity);
-    int ret;
-    if ((ret = setsockopt( mSettings->mSock, SOL_SOCKET, 68, &mSettings->mAffinity, len )) != 0) {
-        printf("FAILURE %d\n", ret);
+    if (isSharded(mSettings)) {
+        int ret;
+        if ((ret = setsockopt( mSettings->mSock, SOL_SOCKET, 68, &mSettings->mAffinity, len )) != 0) {
+            printf("FAILURE %d\n", ret);
+        }
     }
 
     // bind socket to server address

@@ -145,6 +145,16 @@ void thread_start( struct thread_Settings* thread ) {
             thread_sNum--;
             Condition_Unlock( thread_sNum_cond );
         }
+/*    if (thread->mAffinity != -1) {
+        printf("Set thread affinity to %d", thread->mAffinity);
+        cpu_set_t my_set;
+        CPU_ZERO(&my_set);
+        CPU_SET(thread->mAffinity, &my_set);
+
+        pthread_setaffinity_np(thread->mTID, sizeof(cpu_set_t), &my_set);
+    }
+*/
+
 
 #elif defined( HAVE_WIN32_THREAD )
 

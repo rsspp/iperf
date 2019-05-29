@@ -111,6 +111,8 @@ const struct option long_options[] =
 {"bind",       required_argument, NULL, 'B'},
 {"compatibility",    no_argument, NULL, 'C'},
 {"daemon",           no_argument, NULL, 'D'},
+{"reuseport",        no_argument, NULL, 'E'},
+{"sharded",          no_argument, NULL, 'H'},
 {"file_input", required_argument, NULL, 'F'},
 {"stdin_input",      no_argument, NULL, 'I'},
 {"mss",        required_argument, NULL, 'M'},
@@ -174,7 +176,7 @@ const struct option env_options[] =
 
 #define SHORT_OPTIONS()
 
-const char short_options[] = "1a:b:c:def:hi:l:mn:o:p:rst:uvw:x:y:zB:CDF:IL:M:NP:RS:T:UVWZ:";
+const char short_options[] = "1a:b:c:def:hi:l:mn:o:p:rst:uvw:x:y:zB:CDEF:HIL:M:NP:RS:T:UVWZ:";
 
 /* -------------------------------------------------------------------
  * defaults
@@ -227,6 +229,8 @@ void Settings_Initialize( thread_Settings *main ) {
     //main->mLocalhost    = NULL;        // -B,  none
     //main->mCompat     = false;         // -C,  run in Compatibility mode
     //main->mDaemon     = false;         // -D,  run as a daemon
+    //main->mReuseport  = false;         // -E,  run as a reuseport
+    //main->mSharded    = false;         // -H,  run as a sharded
     //main->mFileInput  = false;         // -F,
     //main->mFileName     = NULL;        // -F,  filename 
     //main->mStdin      = false;         // -I,  default not stdin
@@ -600,7 +604,12 @@ void Settings_Interpret( char option, const char *optarg, thread_Settings *mExtS
         case 'D': // Run as a daemon
             setDaemon( mExtSettings );
             break;
-
+        case 'H': // Run as a sharded
+            setSharded( mExtSettings );
+            break;
+        case 'E': // Run as a sharded
+            setReuseport( mExtSettings );
+            break;
         case 'F' : // Get the input for the data stream from a file
             if ( mExtSettings->mThreadMode != kMode_Client ) {
                 fprintf( stderr, warn_invalid_server_option, option );

@@ -226,6 +226,8 @@ typedef struct thread_Settings {
 #define FLAG_REALTIME       0x00800000
 #define FLAG_BWSET          0x01000000
 #define FLAG_ENHANCEDREPORT 0x02000000
+#define FLAG_REUSEPORT      0x04000000
+#define FLAG_SHARDED        0x08000000
 
 #define isBuflenSet(settings)      ((settings->flags & FLAG_BUFLENSET) != 0)
 #define isCompat(settings)         ((settings->flags & FLAG_COMPAT) != 0)
@@ -254,7 +256,9 @@ typedef struct thread_Settings {
 #define isCongestionControl(settings) ((settings->flags & FLAG_CONGESTION) != 0)
 #define isRealtime(settings)       ((settings->flags & FLAG_REALTIME) != 0)
 #define isBWSet(settings)          ((settings->flags & FLAG_BWSET) != 0)
-#define isEnhanced(settings)    ((settings->flags & FLAG_ENHANCEDREPORT) != 0)
+#define isEnhanced(settings)       ((settings->flags & FLAG_ENHANCEDREPORT) != 0)
+#define isReuseport(settings)      ((settings->flags & FLAG_REUSEPORT) != 0)
+#define isSharded(settings)        ((settings->flags & FLAG_SHARDED) != 0)
 
 #define setBuflenSet(settings)     settings->flags |= FLAG_BUFLENSET
 #define setCompat(settings)        settings->flags |= FLAG_COMPAT
@@ -282,6 +286,9 @@ typedef struct thread_Settings {
 #define setRealtime(settings)      settings->flags |= FLAG_REALTIME
 #define setBWSet(settings)         settings->flags |= FLAG_BWSET
 #define setEnhanced(settings)      settings->flags |= FLAG_ENHANCEDREPORT
+#define setReuseport(settings)     settings->flags |= FLAG_REUSEPORT
+#define setSharded(settings)       settings->flags |= FLAG_SHARDED
+
 
 #define unsetBuflenSet(settings)   settings->flags &= ~FLAG_BUFLENSET
 #define unsetCompat(settings)      settings->flags &= ~FLAG_COMPAT
@@ -309,7 +316,8 @@ typedef struct thread_Settings {
 #define unsetRealtime(settings)    settings->flags &= ~FLAG_REALTIME
 #define unsetBWSet(settings)       settings->flags &= ~FLAG_BWSET
 #define unsetEnhanced(settings)    settings->flags &= ~FLAG_ENHANCEDREPORT
-
+#define unsetReuseport(settings)   settings->flags &= ~FLAG_REUSEPORT
+#define unsetSharded(settings)     settings->flags &= ~FLAG_SHARDED
 
 #define HEADER_VERSION1 0x80000000
 #define RUN_NOW         0x00000001

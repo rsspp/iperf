@@ -93,6 +93,18 @@ void listener_spawn( thread_Settings *thread ) {
 void server_spawn( thread_Settings *thread) {
     Server *theServer = NULL;
 
+    if (thread->mAffinity != -1) {
+/*        printf("Set Server affinity to %d", thread->mAffinity);
+        cpu_set_t my_set;
+        CPU_ZERO(&my_set);
+        CPU_SET(thread->mAffinity, &my_set);
+
+        pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &my_set);
+    */
+    }
+
+
+
     // Start up the server
     theServer = new Server( thread );
     

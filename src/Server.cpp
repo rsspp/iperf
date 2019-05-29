@@ -159,6 +159,7 @@ void Server::Run( void ) {
 	    }
 	}
 #endif
+/*
 #ifdef HAVE_SCHED_SETSCHEDULER
 	if ( isRealtime( mSettings ) ) {
 	    struct sched_param sp;
@@ -174,6 +175,7 @@ void Server::Run( void ) {
 	    }
 	}
 #endif
+*/
 	gettimeofday( &watchdog, NULL );
         do {
 	    reportstruct->emptyreport=0;
