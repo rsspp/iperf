@@ -359,7 +359,7 @@ void Listener::Listen( ) {
     }
     } else if (isSharded(mSettings)) {
         int ret;
-        if ((ret = setsockopt( mSettings->mSock, SOL_SOCKET, 68, &mSettings->mAffinity, len )) != 0) {
+        if ((ret = setsockopt( mSettings->mSock, SOL_SOCKET, SO_SHARDED, &mSettings->mAffinity, len )) != 0) {
             printf("FAILURE %d\n", ret);
         }
     }
