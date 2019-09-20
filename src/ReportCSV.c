@@ -72,7 +72,12 @@ void CSV_stats( Transfer_Info *stats ) {
                 stats->startTime, 
                 stats->endTime, 
                 stats->TotalLen, 
-                speed);
+                speed,
+                stats->tcp.write.WriteCnt,
+		        stats->tcp.write.WriteErr,
+		        stats->tcp.write.TCPretry,
+		        stats->tcp.write.cwnd,
+                stats->tcp.write.rtt);
     } else {
         // UDP Reporting
         printf( reportCSV_bw_jitter_loss_format, 

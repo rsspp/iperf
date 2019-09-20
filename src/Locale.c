@@ -310,7 +310,7 @@ const char reportCSV_bw_jitter_loss_format[] =
 "%s,%s,%d,%.1f-%.1f,%qd,%qd,%.3f,%d,%d,%.3f,%d\n";
 #else // HAVE_PRINTF_QD
 const char reportCSV_bw_format[] =
-"%s,%s,%d,%.1f-%.1f,%lld,%lld\n";
+"%s,%s,%d,%.1f-%.1f,%lld,%lld,%lld,%lld,%lld,%lld,%lld\n";
 
 const char reportCSV_bw_jitter_loss_format[] =
 "%s,%s,%d,%.1f-%.1f,%lld,%lld,%.3f,%d,%d,%.3f,%d\n";

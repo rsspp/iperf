@@ -339,8 +339,10 @@ void Listener::Listen( ) {
     if (isReuseport(mSettings)) {
         printf("Setting reuseport\n");
         setsockopt( mSettings->mSock, SOL_SOCKET, SO_REUSEPORT, (char*) &boolean, len );
-        if (mSettings->mAffinity == 0) {
-        struct sock_filter code[] = {
+        if (isSharded(mSettings) && mSettings->mAffinity == 0) {
+
+        printf("Setting REUSEPORT affinity\n");
+            struct sock_filter code[] = {
                     /* A = raw_smp_processor_id() */
                     { BPF_LD  | BPF_W | BPF_ABS, 0, 0, (unsigned)(SKF_AD_OFF + SKF_AD_CPU)},
                   //       {BPF_LD | BPF_W, 0, 0, 1},
@@ -355,9 +357,7 @@ void Listener::Listen( ) {
                 if (setsockopt(mSettings->mSock, SOL_SOCKET, SO_ATTACH_REUSEPORT_CBPF, &p, sizeof(p)))
                             printf("failed to set SO_ATTACH_REUSEPORT_CBPF with errno %d\n", errno);
     }
-    }
-    //  Sharded socket
-    if (isSharded(mSettings)) {
+    } else if (isSharded(mSettings)) {
         int ret;
         if ((ret = setsockopt( mSettings->mSock, SOL_SOCKET, 68, &mSettings->mAffinity, len )) != 0) {
             printf("FAILURE %d\n", ret);
