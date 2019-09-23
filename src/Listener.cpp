@@ -81,6 +81,14 @@
 #include "util.h" 
 #include <linux/filter.h>
 
+#ifndef SO_SHARDED
+#define SO_SHARDED 68
+#endif
+
+#ifndef SO_AUTOMIGRATE
+#define SO_AUTOMIGRATE 69
+#endif
+
 /* ------------------------------------------------------------------- 
  * Stores local hostname and socket info. 
  * ------------------------------------------------------------------- */ 
