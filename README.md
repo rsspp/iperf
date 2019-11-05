@@ -1,4 +1,4 @@
-iPerf with support for SO_SHARDED SO_REUSEPORT and SO_AUTOMIGRATE
+iPerf with support for SO_SHARDED, SO_REUSEPORT and SO_AUTOMIGRATE
 
 
 SO_REUSEPORT is the well known existing option to allow listening to the same socket from multiple processes. Note in this mode we also insert a BPF filter to send the packets received on core 0 to socket number 0. It makes sense only in the context of RSS++. Open one iPerf server per core in the right order (a cleaner implementation could be done using BPF maps, feel free to propose!).
